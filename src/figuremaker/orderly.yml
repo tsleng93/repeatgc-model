@@ -1,0 +1,115 @@
+parameters:
+  npar:
+      default: 100
+  peractefficacy:
+      default: 0.5
+  OverallDiagnoses:
+      default: 485694
+  alpha_msm_min:
+      default: 0
+  alpha_msm_max:
+      default: 1
+  alpha_msw_min:
+      default: 0
+  alpha_msw_max:
+      default: 1
+  alpha_women_min:
+      default: 0
+  alpha_women_max:
+      default: 1
+  nstable_msm_min:
+      default: 0
+  nstable_msm_max:
+      default: 1
+  nstable_msw_min:
+      default: 0
+  nstable_msw_max:
+      default: 1
+  nstable_women_min:
+      default: 0
+  nstable_women_max:
+      default: 1
+  ncasual_msm_min:
+      default: 0
+  ncasual_msm_max:
+      default: 1
+  ncasual_msw_min:
+      default: 0
+  ncasual_msw_max:
+      default: 1
+  ncasual_women_min:
+      default: 0
+  ncasual_women_max:
+      default: 1
+  QALYvals_men_min:
+      default: 0
+  QALYvals_men_max:
+      default: 1
+  QALYvals_women_min:
+      default: 0
+  QALYvals_women_max:
+      default: 1
+  relsample_HIV:
+      default: 1
+  relsample_PrEP:
+      default: 1
+  relsample_history:
+      default: 1
+  
+      
+script: script.R
+
+artefacts:
+ - staticgraph:
+     description: Main figures and supplementary figures based on main run
+     filenames: 
+       - figs/Fig4_combined.png
+       - figs/Fig3_combined.png
+       - figs/Fig2_combined.png
+       - figs/Fig1_combined.png
+       - figs/SuppFig_N_model.png
+       - figs/SuppFig_F_model.png
+       - figs/SuppFig_NX.png
+       - figs/SuppFig_Effectiveness.png
+       - figs/prevplot.png
+
+packages:
+   - ggplot2
+   - tidyverse
+   - patchwork
+   - BCEA
+   - ggdensity
+
+sources:
+   - support.R
+
+resources:
+
+depends:
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:YearlyDiagnoses == 485694 && parameter:OverallDiagnoses == OverallDiagnoses && parameter:alpha_msm_min == alpha_msm_min && parameter:alpha_msm_max == alpha_msm_max && parameter:alpha_msw_min == alpha_msw_min && parameter:alpha_msw_max == alpha_msw_max && parameter:alpha_women_min == alpha_women_min && parameter:alpha_women_max == alpha_women_max  && parameter:nstable_msm_min == nstable_msm_min && parameter:nstable_msm_max == nstable_msm_max && parameter:nstable_msw_min == nstable_msw_min && parameter:nstable_msw_max == nstable_msw_max && parameter:nstable_women_min == nstable_women_min && parameter:nstable_women_max == nstable_women_max && parameter:ncasual_msm_min == ncasual_msm_min && parameter:ncasual_msm_max == ncasual_msm_max && parameter:ncasual_msw_min == ncasual_msw_min && parameter:ncasual_msw_max == ncasual_msw_max && parameter:ncasual_women_min == ncasual_women_min && parameter:ncasual_women_max == ncasual_women_max && parameter:QALYvals_men_min == QALYvals_men_min && parameter:QALYvals_men_max == QALYvals_men_max && parameter:QALYvals_women_min == QALYvals_women_min && parameter:QALYvals_women_max == QALYvals_women_max && parameter:peractefficacy == peractefficacy && parameter:relsample_HIV == relsample_HIV && parameter:relsample_PrEP == relsample_PrEP && parameter:relsample_history == relsample_history)
+      use:
+       inputs/df_FOI.rds: data/df_FOI.rds
+       inputs/df_NX.rds: data/df_NX.rds
+       inputs/df_N.rds: data/df_N.rds
+       inputs/df_Lifeyears.rds: data/df_Lifeyears.rds
+
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:YearlyDiagnoses == 10000 && parameter:OverallDiagnoses == OverallDiagnoses && parameter:alpha_msm_min == alpha_msm_min && parameter:alpha_msm_max == alpha_msm_max && parameter:alpha_msw_min == alpha_msw_min && parameter:alpha_msw_max == alpha_msw_max && parameter:alpha_women_min == alpha_women_min && parameter:alpha_women_max == alpha_women_max  && parameter:nstable_msm_min == nstable_msm_min && parameter:nstable_msm_max == nstable_msm_max && parameter:nstable_msw_min == nstable_msw_min && parameter:nstable_msw_max == nstable_msw_max && parameter:nstable_women_min == nstable_women_min && parameter:nstable_women_max == nstable_women_max && parameter:ncasual_msm_min == ncasual_msm_min && parameter:ncasual_msm_max == ncasual_msm_max && parameter:ncasual_msw_min == ncasual_msw_min && parameter:ncasual_msw_max == ncasual_msw_max && parameter:ncasual_women_min == ncasual_women_min && parameter:ncasual_women_max == ncasual_women_max && parameter:QALYvals_men_min == QALYvals_men_min && parameter:QALYvals_men_max == QALYvals_men_max && parameter:QALYvals_women_min == QALYvals_women_min && parameter:QALYvals_women_max == QALYvals_women_max && parameter:peractefficacy == peractefficacy && parameter:relsample_HIV == relsample_HIV && parameter:relsample_PrEP == relsample_PrEP && parameter:relsample_history == relsample_history)
+      use:
+       inputs/model_paramsandoutputs.rds: data/model_paramsandoutputs.rds
+       inputs/strategies.rds: data/strategies.rds
+  
+  - datamaker:
+      id: latest
+      use:
+       inputs/degdist_msm.rds: data/degdist_msm.rds
+       inputs/degdist_msw.rds: data/degdist_msw.rds
+       inputs/degdist_women.rds: data/degdist_women.rds
+       inputs/omega_msm.rds: data/omega_MSM.rds
+       inputs/omega_msw.rds: data/omega_MSW.rds
+       inputs/omega_women.rds: data/omega_Women.rds
+       inputs/SSuNdata.rds: data/SSuNdata.rds
+
+
+

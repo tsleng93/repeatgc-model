@@ -1,0 +1,78 @@
+parameters:
+  npar:
+     default: 100
+  OverallDiagnoses:
+      default: 485694
+  alpha_msm_min:
+      default: 0
+  alpha_msm_max:
+      default: 1
+  alpha_msw_min:
+      default: 0
+  alpha_msw_max:
+      default: 1
+  alpha_women_min:
+      default: 0
+  alpha_women_max:
+      default: 1
+  nstable_msm_min:
+      default: 0
+  nstable_msm_max:
+      default: 1
+  nstable_msw_min:
+      default: 0
+  nstable_msw_max:
+      default: 1
+  nstable_women_min:
+      default: 0
+  nstable_women_max:
+      default: 1
+  ncasual_msm_min:
+      default: 0
+  ncasual_msm_max:
+      default: 1
+  ncasual_msw_min:
+      default: 0
+  ncasual_msw_max:
+      default: 1
+  ncasual_women_min:
+      default: 0
+  ncasual_women_max:
+      default: 1
+  QALYvals_men_min:
+      default: 0
+  QALYvals_men_max:
+      default: 1
+  QALYvals_women_min:
+      default: 0
+  QALYvals_women_max:
+      default: 1
+  relsample_HIV:
+      default: 1
+  relsample_PrEP:
+      default: 1
+  relsample_history:
+      default: 1
+  
+script: script.R
+
+artefacts:
+ - staticgraph:
+     description: model parameter dataframe
+     filenames: 
+       - data/model_params.rds
+
+packages:
+   - ggplot2
+   - tidyverse
+
+sources:
+   - support.R
+
+resources:
+
+depends:
+  - datamaker:
+      id: latest(parameter:npar == npar)
+      use:
+        inputs/SSuNdata.rds: data/SSuNdata.rds

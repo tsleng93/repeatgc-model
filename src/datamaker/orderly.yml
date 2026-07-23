@@ -1,0 +1,62 @@
+parameters:
+   npar:
+     default: 100
+   aggregation_1:
+     default: "~/SSuN/SSuNdata_aggregation1.csv"
+   aggregation_3:
+      default: "~/SSuN/SSuNdata_aggregation3.csv"
+   degdist: 
+      default: "~/SSuN/SSuN_partner_data.xlsx"
+   stanfile:
+      default: "~/GitHub/repeatgc-model-temp/src/datamaker/supportstan.stan"
+  
+
+script: script.R
+
+artefacts:
+ - staticgraph:
+     description: reformatted SSuN data for model and diagnostic supp plots
+     filenames: 
+       - data/SSuNdata.rds
+       - data/degdist_msm.rds
+       - data/degdist_msw.rds
+       - data/degdist_women.rds
+       - figs/trace1_MSM.rds
+       - figs/trace1_MSW.rds
+       - figs/trace1_Women.rds
+       - figs/trace2_MSM.rds
+       - figs/trace2_MSW.rds
+       - figs/trace2_Women.rds
+       - figs/overlay1_MSM.rds
+       - figs/overlay1_MSW.rds
+       - figs/overlay1_Women.rds
+       - figs/overlay2_MSM.rds
+       - figs/overlay2_MSW.rds
+       - figs/overlay2_Women.rds
+       - figs/degdists_plot.png
+       - data/posterior_omega_MSM.rds
+       - data/posterior_omega_MSW.rds
+       - data/posterior_omega_Women.rds
+       - data/omega_MSM.rds
+       - data/omega_MSW.rds
+       - data/omega_Women.rds
+       - figs/omega_plot.png
+       - figs/trace_plot.png
+       - figs/overlay_plot.png
+
+packages:
+   - rstan
+   - xlsx
+   - ggplot2
+   - patchwork
+   - tidyr
+   - bayesplot
+   - dplyr
+   - binom
+
+sources:
+   - support.R
+
+resources:
+
+depends:

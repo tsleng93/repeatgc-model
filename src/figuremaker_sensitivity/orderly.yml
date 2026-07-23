@@ -1,0 +1,139 @@
+parameters:
+  npar:
+      default: 100
+  OverallDiagnoses:
+      default: 485694
+  YearlyDiagnoses:
+      default: 10000
+  
+script: script.R
+
+artefacts:
+ - staticgraph:
+     description: supplementary sensitivity analysis figures
+     filenames: 
+       - figs/sensitivity_mainimpact.png
+       - figs/sensitivity_mainefficiency.png
+
+
+packages:
+   - ggplot2
+   - tidyverse
+
+sources:
+   - support.R
+
+resources:
+
+depends:
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses && parameter:alpha_msm_min == 0 && parameter:alpha_msm_max == 1 && parameter:alpha_msw_min == 0 && parameter:alpha_msw_max == 1 && parameter:alpha_women_min == 0 && parameter:alpha_women_max == 1  && parameter:nstable_msm_min == 0 && parameter:nstable_msm_max == 1 && parameter:nstable_msw_min == 0 && parameter:nstable_msw_max == 1 && parameter:nstable_women_min == 0 && parameter:nstable_women_max == 1 && parameter:ncasual_msm_min == 0 && parameter:ncasual_msm_max == 1 && parameter:ncasual_msw_min == 0 && parameter:ncasual_msw_max == 1 && parameter:ncasual_women_min == 0 && parameter:ncasual_women_max == 1 && parameter:QALYvals_men_min == 0 && parameter:QALYvals_men_max == 1 && parameter:QALYvals_women_min == 0 && parameter:QALYvals_women_max == 1 && parameter:peractefficacy == 0.6 && parameter:relsample_HIV == 1 && parameter:relsample_PrEP == 1 && parameter:relsample_history == 1)
+      use:
+       inputs/model_paramsandoutputs_main.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_main.rds: data/strategies.rds
+       inputs/df_FOI_main.rds: data/df_FOI.rds
+       
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses &&  parameter:alpha_msm_min == 0.2 && parameter:alpha_msm_max == 0.2 && parameter:alpha_msw_min == 0.2 && parameter:alpha_msw_max == 0.2 && parameter:alpha_women_min == 0.5 && parameter:alpha_women_max == 0.5  && parameter:nstable_msm_min == 0 && parameter:nstable_msm_max == 1 && parameter:nstable_msw_min == 0 && parameter:nstable_msw_max == 1 && parameter:nstable_women_min == 0 && parameter:nstable_women_max == 1 && parameter:ncasual_msm_min == 0 && parameter:ncasual_msm_max == 1 && parameter:ncasual_msw_min == 0 && parameter:ncasual_msw_max == 1 && parameter:ncasual_women_min == 0 && parameter:ncasual_women_max == 1 && parameter:QALYvals_men_min == 0 && parameter:QALYvals_men_max == 1 && parameter:QALYvals_women_min == 0 && parameter:QALYvals_women_max == 1 && parameter:peractefficacy == 0.6 && parameter:relsample_HIV == 1 && parameter:relsample_PrEP == 1 && parameter:relsample_history == 1)
+      use:
+       inputs/model_paramsandoutputs_2.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_2.rds: data/strategies.rds
+       inputs/df_FOI_2.rds: data/df_FOI.rds
+       
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses && parameter:alpha_msm_min == 0.55 && parameter:alpha_msm_max == 0.55 && parameter:alpha_msw_min == 0.5 && parameter:alpha_msw_max == 0.5 && parameter:alpha_women_min == 0.7 && parameter:alpha_women_max == 0.7  && parameter:nstable_msm_min == 0 && parameter:nstable_msm_max == 1 && parameter:nstable_msw_min == 0 && parameter:nstable_msw_max == 1 && parameter:nstable_women_min == 0 && parameter:nstable_women_max == 1 && parameter:ncasual_msm_min == 0 && parameter:ncasual_msm_max == 1 && parameter:ncasual_msw_min == 0 && parameter:ncasual_msw_max == 1 && parameter:ncasual_women_min == 0 && parameter:ncasual_women_max == 1 && parameter:QALYvals_men_min == 0 && parameter:QALYvals_men_max == 1 && parameter:QALYvals_women_min == 0 && parameter:QALYvals_women_max == 1 && parameter:peractefficacy == 0.6 && parameter:relsample_HIV == 1 && parameter:relsample_PrEP == 1 && parameter:relsample_history == 1)
+      use:
+       inputs/model_paramsandoutputs_3.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_3.rds: data/strategies.rds
+       inputs/df_FOI_3.rds: data/df_FOI.rds
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses && parameter:alpha_msm_min == 0 && parameter:alpha_msm_max == 1 && parameter:alpha_msw_min == 0 && parameter:alpha_msw_max == 1 && parameter:alpha_women_min == 0 && parameter:alpha_women_max == 1  && parameter:nstable_msm_min == 0 && parameter:nstable_msm_max == 1 && parameter:nstable_msw_min == 0 && parameter:nstable_msw_max == 1 && parameter:nstable_women_min == 0 && parameter:nstable_women_max == 1 && parameter:ncasual_msm_min == 1 && parameter:ncasual_msm_max == 1 && parameter:ncasual_msw_min == 1 && parameter:ncasual_msw_max == 1 && parameter:ncasual_women_min == 1 && parameter:ncasual_women_max == 1 && parameter:QALYvals_men_min == 0 && parameter:QALYvals_men_max == 1 && parameter:QALYvals_women_min == 0 && parameter:QALYvals_women_max == 1 && parameter:peractefficacy == 0.6 && parameter:relsample_HIV == 1 && parameter:relsample_PrEP == 1 && parameter:relsample_history == 1)
+      use:
+       inputs/model_paramsandoutputs_4.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_4.rds: data/strategies.rds
+       inputs/df_FOI_4.rds: data/df_FOI.rds
+       
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses && parameter:alpha_msm_min == 0 && parameter:alpha_msm_max == 1 && parameter:alpha_msw_min == 0 && parameter:alpha_msw_max == 1 && parameter:alpha_women_min == 0 && parameter:alpha_women_max == 1  && parameter:nstable_msm_min == 0 && parameter:nstable_msm_max == 1 && parameter:nstable_msw_min == 0 && parameter:nstable_msw_max == 1 && parameter:nstable_women_min == 0 && parameter:nstable_women_max == 1 && parameter:ncasual_msm_min == 7 && parameter:ncasual_msm_max == 7 && parameter:ncasual_msw_min == 7 && parameter:ncasual_msw_max == 7 && parameter:ncasual_women_min == 7 && parameter:ncasual_women_max == 7 && parameter:QALYvals_men_min == 0 && parameter:QALYvals_men_max == 1 && parameter:QALYvals_women_min == 0 && parameter:QALYvals_women_max == 1 && parameter:peractefficacy == 0.6 && parameter:relsample_HIV == 1 && parameter:relsample_PrEP == 1 && parameter:relsample_history == 1)
+      use:
+       inputs/model_paramsandoutputs_5.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_5.rds: data/strategies.rds
+       inputs/df_FOI_5.rds: data/df_FOI.rds
+       
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses && parameter:alpha_msm_min == 0 && parameter:alpha_msm_max == 1 && parameter:alpha_msw_min == 0 && parameter:alpha_msw_max == 1 && parameter:alpha_women_min == 0 && parameter:alpha_women_max == 1  && parameter:nstable_msm_min == 12 && parameter:nstable_msm_max == 12 && parameter:nstable_msw_min == 12 && parameter:nstable_msw_max == 12 && parameter:nstable_women_min == 7 && parameter:nstable_women_max == 7 && parameter:ncasual_msm_min == 0 && parameter:ncasual_msm_max == 1 && parameter:ncasual_msw_min == 0 && parameter:ncasual_msw_max == 1 && parameter:ncasual_women_min == 0 && parameter:ncasual_women_max == 1 && parameter:QALYvals_men_min == 0 && parameter:QALYvals_men_max == 1 && parameter:QALYvals_women_min == 0 && parameter:QALYvals_women_max == 1 && parameter:peractefficacy == 0.6 && parameter:relsample_HIV == 1 && parameter:relsample_PrEP == 1 && parameter:relsample_history == 1)
+      use:
+       inputs/model_paramsandoutputs_6.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_6.rds: data/strategies.rds
+       inputs/df_FOI_6.rds: data/df_FOI.rds
+       
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses && parameter:alpha_msm_min == 0 && parameter:alpha_msm_max == 1 && parameter:alpha_msw_min == 0 && parameter:alpha_msw_max == 1 && parameter:alpha_women_min == 0 && parameter:alpha_women_max == 1  && parameter:nstable_msm_min == 36 && parameter:nstable_msm_max == 36 && parameter:nstable_msw_min == 36 && parameter:nstable_msw_max == 36 && parameter:nstable_women_min == 36 && parameter:nstable_women_max == 36 && parameter:ncasual_msm_min == 0 && parameter:ncasual_msm_max == 1 && parameter:ncasual_msw_min == 0 && parameter:ncasual_msw_max == 1 && parameter:ncasual_women_min == 0 && parameter:ncasual_women_max == 1 && parameter:QALYvals_men_min == 0 && parameter:QALYvals_men_max == 1 && parameter:QALYvals_women_min == 0 && parameter:QALYvals_women_max == 1 && parameter:peractefficacy == 0.6 && parameter:relsample_HIV == 1 && parameter:relsample_PrEP == 1 && parameter:relsample_history == 1)
+      use:
+       inputs/model_paramsandoutputs_7.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_7.rds: data/strategies.rds
+       inputs/df_FOI_7.rds: data/df_FOI.rds
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses && parameter:alpha_msm_min == 0 && parameter:alpha_msm_max == 1 && parameter:alpha_msw_min == 0 && parameter:alpha_msw_max == 1 && parameter:alpha_women_min == 0 && parameter:alpha_women_max == 1  && parameter:nstable_msm_min == 0 && parameter:nstable_msm_max == 1 && parameter:nstable_msw_min == 0 && parameter:nstable_msw_max == 1 && parameter:nstable_women_min == 0 && parameter:nstable_women_max == 1 && parameter:ncasual_msm_min == 0 && parameter:ncasual_msm_max == 1 && parameter:ncasual_msw_min == 0 && parameter:ncasual_msw_max == 1 && parameter:ncasual_women_min == 0 && parameter:ncasual_women_max == 1 && parameter:QALYvals_men_min == 0.19 && parameter:QALYvals_men_max == 0.19 && parameter:QALYvals_women_min == 3.26 && parameter:QALYvals_women_max == 3.26 && parameter:peractefficacy == 0.6 && parameter:relsample_HIV == 1 && parameter:relsample_PrEP == 1 && parameter:relsample_history == 1)
+      use:
+       inputs/model_paramsandoutputs_8.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_8.rds: data/strategies.rds
+       inputs/df_FOI_8.rds: data/df_FOI.rds
+       
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses && parameter:alpha_msm_min == 0 && parameter:alpha_msm_max == 1 && parameter:alpha_msw_min == 0 && parameter:alpha_msw_max == 1 && parameter:alpha_women_min == 0 && parameter:alpha_women_max == 1  && parameter:nstable_msm_min == 0 && parameter:nstable_msm_max == 1 && parameter:nstable_msw_min == 0 && parameter:nstable_msw_max == 1 && parameter:nstable_women_min == 0 && parameter:nstable_women_max == 1 && parameter:ncasual_msm_min == 0 && parameter:ncasual_msm_max == 1 && parameter:ncasual_msw_min == 0 && parameter:ncasual_msw_max == 1 && parameter:ncasual_women_min == 0 && parameter:ncasual_women_max == 1 && parameter:QALYvals_men_min == 5.48 && parameter:QALYvals_men_max == 5.48 && parameter:QALYvals_women_min == 39.14 && parameter:QALYvals_women_max == 39.14 && parameter:peractefficacy == 0.6 && parameter:relsample_HIV == 1 && parameter:relsample_PrEP == 1 && parameter:relsample_history == 1)
+      use:
+       inputs/model_paramsandoutputs_9.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_9.rds: data/strategies.rds
+       inputs/df_FOI_9.rds: data/df_FOI.rds
+       
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses && parameter:alpha_msm_min == 0 && parameter:alpha_msm_max == 1 && parameter:alpha_msw_min == 0 && parameter:alpha_msw_max == 1 && parameter:alpha_women_min == 0 && parameter:alpha_women_max == 1  && parameter:nstable_msm_min == 0 && parameter:nstable_msm_max == 1 && parameter:nstable_msw_min == 0 && parameter:nstable_msw_max == 1 && parameter:nstable_women_min == 0 && parameter:nstable_women_max == 1 && parameter:ncasual_msm_min == 0 && parameter:ncasual_msm_max == 1 && parameter:ncasual_msw_min == 0 && parameter:ncasual_msw_max == 1 && parameter:ncasual_women_min == 0 && parameter:ncasual_women_max == 1 && parameter:QALYvals_men_min == 0 && parameter:QALYvals_men_max == 1 && parameter:QALYvals_women_min == 0 && parameter:QALYvals_women_max == 1 && parameter:peractefficacy == 0.4 && parameter:relsample_HIV == 1 && parameter:relsample_PrEP == 1 && parameter:relsample_history == 1)
+      use:
+       inputs/model_paramsandoutputs_10.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_10.rds: data/strategies.rds
+       inputs/df_FOI_10.rds: data/df_FOI.rds
+       
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses && parameter:alpha_msm_min == 0 && parameter:alpha_msm_max == 1 && parameter:alpha_msw_min == 0 && parameter:alpha_msw_max == 1 && parameter:alpha_women_min == 0 && parameter:alpha_women_max == 1  && parameter:nstable_msm_min == 0 && parameter:nstable_msm_max == 1 && parameter:nstable_msw_min == 0 && parameter:nstable_msw_max == 1 && parameter:nstable_women_min == 0 && parameter:nstable_women_max == 1 && parameter:ncasual_msm_min == 0 && parameter:ncasual_msm_max == 1 && parameter:ncasual_msw_min == 0 && parameter:ncasual_msw_max == 1 && parameter:ncasual_women_min == 0 && parameter:ncasual_women_max == 1 && parameter:QALYvals_men_min == 0 && parameter:QALYvals_men_max == 1 && parameter:QALYvals_women_min == 0 && parameter:QALYvals_women_max == 1 && parameter:peractefficacy == 0.8 && parameter:relsample_HIV == 1 && parameter:relsample_PrEP == 1 && parameter:relsample_history == 1 )
+      use:
+       inputs/model_paramsandoutputs_11.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_11.rds: data/strategies.rds
+       inputs/df_FOI_11.rds: data/df_FOI.rds
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses && parameter:alpha_msm_min == 0 && parameter:alpha_msm_max == 1 && parameter:alpha_msw_min == 0 && parameter:alpha_msw_max == 1 && parameter:alpha_women_min == 0 && parameter:alpha_women_max == 1  && parameter:nstable_msm_min == 0 && parameter:nstable_msm_max == 1 && parameter:nstable_msw_min == 0 && parameter:nstable_msw_max == 1 && parameter:nstable_women_min == 0 && parameter:nstable_women_max == 1 && parameter:ncasual_msm_min == 0 && parameter:ncasual_msm_max == 1 && parameter:ncasual_msw_min == 0 && parameter:ncasual_msw_max == 1 && parameter:ncasual_women_min == 0 && parameter:ncasual_women_max == 1 && parameter:QALYvals_men_min == 0 && parameter:QALYvals_men_max == 1 && parameter:QALYvals_women_min == 0 && parameter:QALYvals_women_max == 1 && parameter:peractefficacy == 0.6 && parameter:relsample_HIV == 0.5 && parameter:relsample_PrEP == 1 && parameter:relsample_history == 1)
+      use:
+       inputs/model_paramsandoutputs_12.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_12.rds: data/strategies.rds
+       inputs/df_FOI_12.rds: data/df_FOI.rds
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses && parameter:alpha_msm_min == 0 && parameter:alpha_msm_max == 1 && parameter:alpha_msw_min == 0 && parameter:alpha_msw_max == 1 && parameter:alpha_women_min == 0 && parameter:alpha_women_max == 1  && parameter:nstable_msm_min == 0 && parameter:nstable_msm_max == 1 && parameter:nstable_msw_min == 0 && parameter:nstable_msw_max == 1 && parameter:nstable_women_min == 0 && parameter:nstable_women_max == 1 && parameter:ncasual_msm_min == 0 && parameter:ncasual_msm_max == 1 && parameter:ncasual_msw_min == 0 && parameter:ncasual_msw_max == 1 && parameter:ncasual_women_min == 0 && parameter:ncasual_women_max == 1 && parameter:QALYvals_men_min == 0 && parameter:QALYvals_men_max == 1 && parameter:QALYvals_women_min == 0 && parameter:QALYvals_women_max == 1 && parameter:peractefficacy == 0.6 && parameter:relsample_HIV == 1.5 && parameter:relsample_PrEP == 1 && parameter:relsample_history == 1)
+      use:
+       inputs/model_paramsandoutputs_13.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_13.rds: data/strategies.rds
+       inputs/df_FOI_13.rds: data/df_FOI.rds
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses && parameter:alpha_msm_min == 0 && parameter:alpha_msm_max == 1 && parameter:alpha_msw_min == 0 && parameter:alpha_msw_max == 1 && parameter:alpha_women_min == 0 && parameter:alpha_women_max == 1  && parameter:nstable_msm_min == 0 && parameter:nstable_msm_max == 1 && parameter:nstable_msw_min == 0 && parameter:nstable_msw_max == 1 && parameter:nstable_women_min == 0 && parameter:nstable_women_max == 1 && parameter:ncasual_msm_min == 0 && parameter:ncasual_msm_max == 1 && parameter:ncasual_msw_min == 0 && parameter:ncasual_msw_max == 1 && parameter:ncasual_women_min == 0 && parameter:ncasual_women_max == 1 && parameter:QALYvals_men_min == 0 && parameter:QALYvals_men_max == 1 && parameter:QALYvals_women_min == 0 && parameter:QALYvals_women_max == 1 && parameter:peractefficacy == 0.6 && parameter:relsample_HIV == 1 && parameter:relsample_PrEP == 0.5 && parameter:relsample_history == 1)
+      use:
+       inputs/model_paramsandoutputs_14.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_14.rds: data/strategies.rds
+       inputs/df_FOI_14.rds: data/df_FOI.rds
+       
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses && parameter:alpha_msm_min == 0 && parameter:alpha_msm_max == 1 && parameter:alpha_msw_min == 0 && parameter:alpha_msw_max == 1 && parameter:alpha_women_min == 0 && parameter:alpha_women_max == 1  && parameter:nstable_msm_min == 0 && parameter:nstable_msm_max == 1 && parameter:nstable_msw_min == 0 && parameter:nstable_msw_max == 1 && parameter:nstable_women_min == 0 && parameter:nstable_women_max == 1 && parameter:ncasual_msm_min == 0 && parameter:ncasual_msm_max == 1 && parameter:ncasual_msw_min == 0 && parameter:ncasual_msw_max == 1 && parameter:ncasual_women_min == 0 && parameter:ncasual_women_max == 1 && parameter:QALYvals_men_min == 0 && parameter:QALYvals_men_max == 1 && parameter:QALYvals_women_min == 0 && parameter:QALYvals_women_max == 1 && parameter:peractefficacy == 0.6 && parameter:relsample_HIV == 1 && parameter:relsample_PrEP == 1.5 && parameter:relsample_history == 1)
+      use:
+       inputs/model_paramsandoutputs_15.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_15.rds: data/strategies.rds
+       inputs/df_FOI_15.rds: data/df_FOI.rds
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses && parameter:alpha_msm_min == 0 && parameter:alpha_msm_max == 1 && parameter:alpha_msw_min == 0 && parameter:alpha_msw_max == 1 && parameter:alpha_women_min == 0 && parameter:alpha_women_max == 1  && parameter:nstable_msm_min == 0 && parameter:nstable_msm_max == 1 && parameter:nstable_msw_min == 0 && parameter:nstable_msw_max == 1 && parameter:nstable_women_min == 0 && parameter:nstable_women_max == 1 && parameter:ncasual_msm_min == 0 && parameter:ncasual_msm_max == 1 && parameter:ncasual_msw_min == 0 && parameter:ncasual_msw_max == 1 && parameter:ncasual_women_min == 0 && parameter:ncasual_women_max == 1 && parameter:QALYvals_men_min == 0 && parameter:QALYvals_men_max == 1 && parameter:QALYvals_women_min == 0 && parameter:QALYvals_women_max == 1 && parameter:peractefficacy == 0.6 && parameter:relsample_HIV == 1 && parameter:relsample_PrEP == 1 && parameter:relsample_history == 0.5)
+      use:
+       inputs/model_paramsandoutputs_16.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_16.rds: data/strategies.rds
+       inputs/df_FOI_16.rds: data/df_FOI.rds
+  - runmodel:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:YearlyDiagnoses == YearlyDiagnoses && parameter:alpha_msm_min == 0 && parameter:alpha_msm_max == 1 && parameter:alpha_msw_min == 0 && parameter:alpha_msw_max == 1 && parameter:alpha_women_min == 0 && parameter:alpha_women_max == 1  && parameter:nstable_msm_min == 0 && parameter:nstable_msm_max == 1 && parameter:nstable_msw_min == 0 && parameter:nstable_msw_max == 1 && parameter:nstable_women_min == 0 && parameter:nstable_women_max == 1 && parameter:ncasual_msm_min == 0 && parameter:ncasual_msm_max == 1 && parameter:ncasual_msw_min == 0 && parameter:ncasual_msw_max == 1 && parameter:ncasual_women_min == 0 && parameter:ncasual_women_max == 1 && parameter:QALYvals_men_min == 0 && parameter:QALYvals_men_max == 1 && parameter:QALYvals_women_min == 0 && parameter:QALYvals_women_max == 1 && parameter:peractefficacy == 0.6 && parameter:relsample_HIV == 1 && parameter:relsample_PrEP == 1 && parameter:relsample_history == 1.5)
+      use:
+       inputs/model_paramsandoutputs_17.rds: data/model_paramsandoutputs.rds
+       inputs/strategies_17.rds: data/strategies.rds
+       inputs/df_FOI_17.rds: data/df_FOI.rds
