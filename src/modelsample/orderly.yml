@@ -76,3 +76,6 @@ depends:
       id: latest(parameter:npar == npar)
       use:
         inputs/SSuNdata.rds: data/SSuNdata.rds
+        inputs/degdist_msm.rds: data/degdist_msm.rds
+        inputs/degdist_msw.rds: data/degdist_msw.rds
+        inputs/degdist_women.rds: data/degdist_women.rds

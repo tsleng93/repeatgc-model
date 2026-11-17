@@ -40,8 +40,10 @@ sexactscasual_women <- sample(1:7, npar, replace = TRUE)
 sexactsstable_women <- sample(7:36, npar, replace = TRUE)  
 
 alpha_msm <- runif(n = npar, min = 0.2, max = 0.55)
-alpha_msw <- runif(n = npar, min = 0.2, max = 0.5)
-alpha_women <- runif(n = npar, min = 0.5, max = 0.7)
+# alpha_msw <- runif(n = npar, min = 0.2, max = 0.5)
+# alpha_women <- runif(n = npar, min = 0.5, max = 0.7)
+alpha_msw <- runif(n = npar, min = 0.1, max = 0.5)
+alpha_women <- runif(n = npar, min = 0.2, max = 1)
 
 QALYvals_men = sample_values_df_lognormal(n_times = npar, min_values = 0.19, max_values = 5.48, mean_values = 1.43)
 QALYvals_women = sample_values_df_lognormal(n_times = npar, min_values = 3.26, max_values = 39.14, mean_values = 14.22)
@@ -143,6 +145,11 @@ df_model = data.frame(paramnum = Fvals$paramnum,
 
 
 
+
+
+df <- readRDS("inputs/SSuNdata.rds") # read in data from datamaker
+
+
 # add in marker for which degree distribution
 df_model$degdistmarker = 0
 df_model$degdistmarker[df_model$gc_history == "no history" & df_model$HIV_prepuse == "HIV- non-PrEP user"] = 2
@@ -153,7 +160,17 @@ df_model$degdistmarker[df_model$gc_history == "with history" & df_model$HIV_prep
 df_model$degdistmarker[df_model$gc_history == "with history" & df_model$HIV_prepuse == "PLHIV"] = 7
 
 
+set.seed(5678)
+sampled_degdist_msm <- samplevalues_degdist(readRDS("inputs/degdist_msm.rds"))
+sampled_degdist_msw <- samplevalues_degdist(readRDS("inputs/degdist_msw.rds"))
+sampled_degdist_women <- samplevalues_degdist(readRDS("inputs/degdist_women.rds"))
+
+
+
+
 if (!dir.exists("data")) dir.create("data")
 
 saveRDS(df_model, file = "data/model_params.rds")
-
+saveRDS(sampled_degdist_msm, file = "data/sampled_degdist_msm.rds")
+saveRDS(sampled_degdist_msw, file = "data/sampled_degdist_msw.rds")
+saveRDS(sampled_degdist_women, file = "data/sampled_degdist_women.rds")
