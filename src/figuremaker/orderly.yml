@@ -55,7 +55,10 @@ parameters:
       default: 1
   relsample_history:
       default: 1
-  
+  orderly_sens:
+      default: "NULL"
+  degdist_sens:
+      default: "NULL" 
       
 script: script.R
 
@@ -64,14 +67,27 @@ artefacts:
      description: Main figures and supplementary figures based on main run
      filenames: 
        - figs/Fig4_combined.png
+       - figs/Fig4_combined.pdf
        - figs/Fig3_combined.png
+       - figs/Fig3_combined.pdf
        - figs/Fig2_combined.png
+       - figs/Fig2_combined.pdf
        - figs/Fig1_combined.png
+       - figs/Fig1_combined.pdf
        - figs/SuppFig_N_model.png
        - figs/SuppFig_F_model.png
+       - figs/SuppFig_D.png
        - figs/SuppFig_NX.png
        - figs/SuppFig_Effectiveness.png
        - figs/prevplot.png
+       - figs/convergence_assessment.png
+       - figs/incremental_table_msm.csv
+       - figs/incremental_table_msw.csv
+       - figs/incremental_table_women.csv
+       - figs/Fig5_combined.png
+       - figs/Fig5_combined.pdf
+       - figs/Fig2_combined_2yr.png
+
 
 packages:
    - ggplot2
@@ -92,6 +108,7 @@ depends:
        inputs/df_FOI.rds: data/df_FOI.rds
        inputs/df_NX.rds: data/df_NX.rds
        inputs/df_N.rds: data/df_N.rds
+       inputs/df_D.rds: data/df_D.rds
        inputs/df_Lifeyears.rds: data/df_Lifeyears.rds
 
   - runmodel:
@@ -110,6 +127,4 @@ depends:
        inputs/omega_msw.rds: data/omega_MSW.rds
        inputs/omega_women.rds: data/omega_Women.rds
        inputs/SSuNdata.rds: data/SSuNdata.rds
-
-
 
