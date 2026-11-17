@@ -19,8 +19,10 @@ df_strategy_14 <- readRDS("inputs/strategies_14.rds")
 df_strategy_15 <- readRDS("inputs/strategies_15.rds")
 df_strategy_16 <- readRDS("inputs/strategies_16.rds")
 df_strategy_17 <- readRDS("inputs/strategies_17.rds")
-
-
+df_strategy_18 <- readRDS("inputs/strategies_18.rds")
+df_strategy_19 <- readRDS("inputs/strategies_main.rds") # not including
+df_strategy_20 <- readRDS("inputs/strategies_20.rds")
+df_strategy_21 <- readRDS("inputs/strategies_21.rds")
 
 df_strategy_main2 <- df_strategy_main
 df_strategy_main3 <- df_strategy_main
@@ -38,6 +40,10 @@ df_strategy_main14 <- df_strategy_main
 df_strategy_main15 <- df_strategy_main
 df_strategy_main16 <- df_strategy_main
 df_strategy_main17 <- df_strategy_main
+df_strategy_main18 <- df_strategy_main
+df_strategy_main19 <- df_strategy_main
+df_strategy_main20 <- df_strategy_main
+df_strategy_main21 <- df_strategy_main
 
 
 df_strategy_2$sensitivity = "b) per-act transmission probability"
@@ -46,16 +52,20 @@ df_strategy_4$sensitivity = "c) sex acts per short-term partner"
 df_strategy_5$sensitivity = "c) sex acts per short-term partner"
 df_strategy_6$sensitivity = "d) sex acts per stable partner"
 df_strategy_7$sensitivity = "d) sex acts per stable partner"
-df_strategy_8$sensitivity = "h) QALY loss per infection"
-df_strategy_9$sensitivity = "h) QALY loss per infection"
+df_strategy_8$sensitivity = "j) QALY loss per infection"
+df_strategy_9$sensitivity = "j) QALY loss per infection"
 df_strategy_10$sensitivity = "a) per-act efficacy"
 df_strategy_11$sensitivity = "a) per-act efficacy"
-df_strategy_12$sensitivity = "e) relative uptake, PLHIV"
-df_strategy_13$sensitivity = "e) relative uptake, PLHIV"
-df_strategy_14$sensitivity = "f) relative uptake, PrEP users"
-df_strategy_15$sensitivity = "f) relative uptake, PrEP users"
-df_strategy_16$sensitivity = "g) relative uptake, GC history"
-df_strategy_17$sensitivity = "g) relative uptake, GC history"
+df_strategy_12$sensitivity = "g) relative uptake, PLHIV"
+df_strategy_13$sensitivity = "g) relative uptake, PLHIV"
+df_strategy_14$sensitivity = "h) relative uptake, PrEP users"
+df_strategy_15$sensitivity = "h) relative uptake, PrEP users"
+df_strategy_16$sensitivity = "i) relative uptake, GC history"
+df_strategy_17$sensitivity = "i) relative uptake, GC history"
+df_strategy_18$sensitivity = "e) % partnerships short-term"
+df_strategy_19$sensitivity = "e) % partnerships short-term"
+df_strategy_20$sensitivity = "f) degree distribution"
+df_strategy_21$sensitivity = "f) degree distribution"
 
 df_strategy_main2$sensitivity = "b) per-act transmission probability"
 df_strategy_main3$sensitivity = "b) per-act transmission probability"
@@ -63,16 +73,20 @@ df_strategy_main4$sensitivity = "c) sex acts per short-term partner"
 df_strategy_main5$sensitivity = "c) sex acts per short-term partner"
 df_strategy_main6$sensitivity = "d) sex acts per stable partner"
 df_strategy_main7$sensitivity = "d) sex acts per stable partner"
-df_strategy_main8$sensitivity = "h) QALY loss per infection"
-df_strategy_main9$sensitivity = "h) QALY loss per infection"
+df_strategy_main8$sensitivity = "j) QALY loss per infection"
+df_strategy_main9$sensitivity = "j) QALY loss per infection"
 df_strategy_main10$sensitivity = "a) per-act efficacy"
 df_strategy_main11$sensitivity = "a) per-act efficacy"
-df_strategy_main12$sensitivity = "e) relative uptake, PLHIV"
-df_strategy_main13$sensitivity = "e) relative uptake, PLHIV"
-df_strategy_main14$sensitivity = "f) relative uptake, PrEP users"
-df_strategy_main15$sensitivity = "f) relative uptake, PrEP users"
-df_strategy_main16$sensitivity = "g) relative uptake, GC history"
-df_strategy_main17$sensitivity = "g) relative uptake, GC history"
+df_strategy_main12$sensitivity = "g) relative uptake, PLHIV"
+df_strategy_main13$sensitivity = "g) relative uptake, PLHIV"
+df_strategy_main14$sensitivity = "h) relative uptake, PrEP users"
+df_strategy_main15$sensitivity = "h) relative uptake, PrEP users"
+df_strategy_main16$sensitivity = "i) relative uptake, GC history"
+df_strategy_main17$sensitivity = "i) relative uptake, GC history"
+df_strategy_main18$sensitivity = "e) % partnerships short-term"
+df_strategy_main19$sensitivity = "e) % partnerships short-term"
+df_strategy_main20$sensitivity = "f) degree distribution"
+df_strategy_main21$sensitivity = "f) degree distribution"
 
 
 df_strategy_2$stratnum = 9
@@ -91,9 +105,13 @@ df_strategy_14$stratnum = 3
 df_strategy_15$stratnum = 3
 df_strategy_16$stratnum = 2
 df_strategy_17$stratnum = 2
+df_strategy_18$stratnum = 6
+df_strategy_19$stratnum = 6
+df_strategy_20$stratnum = 5
+df_strategy_21$stratnum = 5
 
 df_strategy_main2$stratnum = 9
-df_strategy_main3$stratnum = 9
+df_strategy_main3$stratnum= 9
 df_strategy_main4$stratnum = 8
 df_strategy_main5$stratnum = 8
 df_strategy_main6$stratnum = 7
@@ -108,6 +126,10 @@ df_strategy_main14$stratnum = 3
 df_strategy_main15$stratnum = 3
 df_strategy_main16$stratnum = 2
 df_strategy_main17$stratnum = 2
+df_strategy_main18$stratnum = 6
+df_strategy_main19$stratnum = 6
+df_strategy_main20$stratnum = 5
+df_strategy_main21$stratnum = 5
 
 df_strategy_2$highorlow  = "low"
 df_strategy_3$highorlow  = "high"
@@ -125,6 +147,10 @@ df_strategy_14$highorlow  = "low"
 df_strategy_15$highorlow = "high"
 df_strategy_16$highorlow  = "low"
 df_strategy_17$highorlow = "high"
+df_strategy_18$highorlow  = "low"
+df_strategy_19$highorlow = "high"
+df_strategy_20$highorlow  = "low"
+df_strategy_21$highorlow = "high"
 
 df_strategy_main2$highorlow = "main"
 df_strategy_main3$highorlow  = "main"
@@ -142,6 +168,10 @@ df_strategy_main14$highorlow  = "main"
 df_strategy_main15$highorlow = "main"
 df_strategy_main16$highorlow  = "main"
 df_strategy_main17$highorlow = "main"
+df_strategy_main18$highorlow  = "main"
+df_strategy_main19$highorlow = "main"
+df_strategy_main20$highorlow  = "main"
+df_strategy_main21$highorlow = "main"
 
 df_strategy_2$sensmarker = "sensitivity"
 df_strategy_3$sensmarker  = "sensitivity"
@@ -159,6 +189,10 @@ df_strategy_14$sensmarker  = "sensitivity"
 df_strategy_15$sensmarker = "sensitivity"
 df_strategy_16$sensmarker  = "sensitivity"
 df_strategy_17$sensmarker = "sensitivity"
+df_strategy_18$sensmarker  = "sensitivity"
+df_strategy_19$sensmarker = "sensitivity"
+df_strategy_20$sensmarker  = "sensitivity"
+df_strategy_21$sensmarker = "sensitivity"
 
 df_strategy_main2$sensmarker = "main"
 df_strategy_main3$sensmarker  = "main"
@@ -176,6 +210,10 @@ df_strategy_main14$sensmarker  = "main"
 df_strategy_main15$sensmarker = "main"
 df_strategy_main16$sensmarker  = "main"
 df_strategy_main17$sensmarker = "main"
+df_strategy_main18$sensmarker  = "main"
+df_strategy_main19$sensmarker = "main"
+df_strategy_main20$sensmarker  = "main"
+df_strategy_main21$sensmarker = "main"
 
 df_strategy_combined = rbind(df_strategy_main2, df_strategy_main3,
                              df_strategy_main4, df_strategy_main5,
@@ -185,6 +223,8 @@ df_strategy_combined = rbind(df_strategy_main2, df_strategy_main3,
                              df_strategy_main12, df_strategy_main13,
                              df_strategy_main14, df_strategy_main15,
                              df_strategy_main16, df_strategy_main17,
+                             df_strategy_main18, df_strategy_main19,
+                             df_strategy_main20, df_strategy_main21,
                              df_strategy_2, df_strategy_3,
                              df_strategy_4, df_strategy_5,
                              df_strategy_6, df_strategy_7,
@@ -192,7 +232,9 @@ df_strategy_combined = rbind(df_strategy_main2, df_strategy_main3,
                              df_strategy_10, df_strategy_11,
                              df_strategy_12, df_strategy_13,
                              df_strategy_14, df_strategy_15,
-                             df_strategy_16, df_strategy_17)
+                             df_strategy_16, df_strategy_17,
+                             df_strategy_18, df_strategy_19,
+                             df_strategy_20, df_strategy_21)
 
 
 df_strategy_combined$sensitivity <- factor(df_strategy_combined$sensitivity, levels = unique(df_strategy_combined$sensitivity[order(df_strategy_combined$stratnum)]))
@@ -204,6 +246,10 @@ df_strategy_combined$numberneededtotreat_QALY = df_strategy_combined$vaccinatedn
 df_strategy_combined$numberneededtotreat_QALY[df_strategy_combined$numberneededtotreat_QALY < 0] = -10000
 df_strategy_combined$numberneededtotreat_QALY[is.na(df_strategy_combined$numberneededtotreat_QALY)] = -10000
 
+Years_QALY = 5
+df_strategy$caseavertedpercent = 100*(df_strategy$caseaverted)/(Years_QALY * df_strategy$numrepeat)
+
+
 df_summary <- df_strategy_combined %>%
   group_by(strategy, sexorientation, sensitivity, highorlow, sensmarker) %>%
   summarise(across(where(is.numeric), mean, na.rm = TRUE), .groups = "drop")
@@ -211,9 +257,11 @@ df_summary <- df_strategy_combined %>%
 #Incidence
 df_summary_temp = df_summary[df_summary$strategy == "9. to all", ]
 
-p1 <- figplot(df_summary_temp, scaler = 1, outputstring =  "impactnum", title = paste("50% per act efficacy", "", sep = ""), ymin = 0, ymax = 100, ylabel = "Reduction in repeat-GC \n rate per 1000 person-years", colsorrows = "rows")
-p2 <- figplot(df_summary_temp, scaler = 1, outputstring =  "impact", title = paste("50% per act efficacy", "", sep = ""), ymin = 0, ymax = 60, ylabel = "% reduction in repeat-GC \n rate per 1000 person-years", colsorrows = "rows")
-p3 <- figplot(df_summary_temp, scaler = 1, outputstring =  "numberneededtotreat", title = paste("50% per act efficacy", "", sep = ""), ymin = 0, ymax = 60, ylabel = "Number needed to \n vaccinate to avert one \n repeat-GC over five years", colsorrows = "rows")
+
+p1 <- figplot(df_summary_temp, scaler = 1, outputstring =  "impact", title = paste("50% per act efficacy", "", sep = ""), ymin = 0, ymax = 60, ylabel = "% reduction in repeat-GC \n rate per 1000 person-years", colsorrows = "rows")
+
+p2 <- figplot(df_summary_temp, scaler = 1, outputstring =  "caseaverted", title = paste("50% per act efficacy", "", sep = ""), ymin = 0, ymax = 3500, ylabel = "Number of repeat diagnoses \n averted over five years", colsorrows = "rows")
+p3 <- figplot(df_summary_temp, scaler = 1, outputstring =  "numberneededtotreat", title = paste("50% per act efficacy", "", sep = ""), ymin = 0, ymax = 150, ylabel = "Number needed to \n vaccinate to avert one \n repeat-GC over five years", colsorrows = "rows")
 p4 <- figplot(df_summary_temp, scaler = 1, outputstring =  "efficacy", title = paste("50% per act efficacy", "", sep = ""), ymin = 0, ymax = 100, ylabel = "% effectiveness", colsorrows = "rows")
 p5 <- figplot(df_summary_temp, scaler = 1, outputstring =  "QALYsgained", title = paste("50% per act efficacy", "", sep = ""), ymin = 0, ymax = 12, ylabel = "QALYs gained from repeat-GC \n averted over five years", colsorrows = "rows")
 p6 <- figplot(df_summary_temp, scaler = 0.001, outputstring =  "numberneededtotreat_QALY", title = paste("50% per act efficacy", "", sep = ""), ymin = 0, ymax = 45, ylabel = "Number (thousands) needed \n to vaccinate to \n gain one QALY", colsorrows = "rows")

@@ -16,7 +16,7 @@ figplot <- function(df, scaler,outputstring,  ymin, ymax, title, ylabel, colsorr
 
   df_summary_1 <- df_summary[df_summary$sensmarker == "main", ]
   df_summary_2 <- df_summary[df_summary$sensmarker != "main", ]
-  df_summary_2$meanmain  = rep(unique(df_summary_1$mean), each = 16)
+  df_summary_2$meanmain  = rep(unique(df_summary_1$mean), each = 20)
   
   p_foi <- ggplot(df_summary_2, aes(x = sensitivity, ymin = mean, ymax = meanmain, color = highorlow, label = strategy)) +
     
