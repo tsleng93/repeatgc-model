@@ -69,21 +69,21 @@ saveRDS(df, file = "data/SSuNdata.rds")
 ### Degree distributions from SSuN ###
 
 #read in MSM deg dist
-degdist_msm <- degdistmaker(degdist, sheetName = "MSM Num Male Parts")
+degdist_msm <- degdistmaker_sample(degdist, sheetName = "MSM Num Male Parts")
 saveRDS(degdist_msm, file = "data/degdist_msm.rds")
 
 ## read in MSW deg dist
-degdist_msw <- degdistmaker(degdist, sheetName = "nonMSMmale num female parts")
+degdist_msw <- degdistmaker_sample(degdist, sheetName = "nonMSMmale num female parts")
 saveRDS(degdist_msw, file = "data/degdist_msw.rds")
 
 ## read in Women deg dist
-degdist_women <- degdistmaker(degdist, sheetName = "Women num male parts")
+degdist_women <- degdistmaker_sample(degdist, sheetName = "Women num male parts")
 saveRDS(degdist_women, file = "data/degdist_women.rds")
 
-p1 <- Fig_degdist(degdist_msm, degdist_msw, degdist_women, xmax = 20)
+#p1 <- Fig_degdist(degdist_msm, degdist_msw, degdist_women, xmax = 20)
 
-p1
-ggsave("figs/degdists_plot.png", p1, width = 10, height = 5, units = "in", dpi = 1200)
+#p1
+#ggsave("figs/degdists_plot.png", p1, width = 10, height = 5, units = "in", dpi = 1200)
 
 
 

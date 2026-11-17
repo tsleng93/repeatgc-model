@@ -81,6 +81,35 @@ degdistmaker <- function(fileName, sheetName){
   dftemp
 }
 
+degdistmaker_sample <- function(fileName, sheetName){
+  
+  temp <- read.xlsx(fileName, sheetName = sheetName)
+  
+  dftemp <- data.frame(partnernum = temp[2:nrow(temp), 1], 
+                       nohistorynonuser = temp[2:nrow(temp), 38], 
+                       nohistorynonuserrange = temp[2:nrow(temp), 39], 
+                       nohistoryPrEPuser = temp[2:nrow(temp), 40],
+                       nohistoryPrEPuserrange = temp[2:nrow(temp), 41],
+                       nohistoryHIV = temp[2:nrow(temp), 42],
+                       nohistoryHIVrange = temp[2:nrow(temp), 43],
+                       yeshistorynonuser = temp[2:nrow(temp), 44],
+                       yeshistorynonuserrange = temp[2:nrow(temp), 45], 
+                       yeshistoryPrEPuser = temp[2:nrow(temp), 46],
+                       yeshistoryPrEPuserrange = temp[2:nrow(temp), 47], 
+                       yeshistoryHIV = temp[2:nrow(temp), 48],
+                       yeshistoryHIVrange = temp[2:nrow(temp), 49]
+  )
+  
+  dftemp <- column_minandmax(dftemp, 1 + 2*(1:6), "numeric")
+  dftemp <- dftemp[,-(1 + 2*(1:6))]
+  dftemp[] <- lapply(dftemp, function(x) {
+    if (is.character(x)) as.numeric(x) else x
+  })
+  
+  
+  dftemp
+}
+
 #used
 stan_distributions <- function(M, N, npar, partnermax, orientation, stanfile, seed){
 
@@ -90,18 +119,21 @@ stan_distributions <- function(M, N, npar, partnermax, orientation, stanfile, se
     Successes = M
   )
 
-  thinning <- 10
+  #thinning <- 10
 
   set.seed(seed)
   ## Fit MSM distribution using STAN (MCMC)
   fittemp <- stan(file = stanfile, data = data_list,
-                 iter = 20000, chains = 4, thin = thinning, seed = seed)
+                 iter = 20000, chains = 4, thin = 1, seed = seed)
 
   ## Extract specific R-hat and ESS values for all parameters
+
   rhat_values <- summary(fittemp)$summary[, "Rhat"]
   ess_values <- summary(fittemp)$summary[, "n_eff"]
 
+  print("rhat")
   print(rhat_values)
+  print("ess")
   print(ess_values)
 
 
@@ -215,7 +247,13 @@ stan_distributions <- function(M, N, npar, partnermax, orientation, stanfile, se
   posterior_samples <- rstan::extract(fittemp)
   saveRDS(posterior_samples, file = paste0("data/posterior_omega_", orientation, ".rds"))
 
-  thinning <- 4000/npar
+  
+  iter <- 20000
+  chains <- 4
+  target_draws <- 5000
+  
+  thinning <- max(1, floor((iter / 2 * chains) / target_draws))
+ # thinning <- 4000/npar
 
 
   temp <- matrix(nrow = npar, ncol = partnermax)
@@ -311,6 +349,15 @@ p <- ggplot(data = degdist_2, aes(x = partnernum, y = 100*value, color = subgrou
 #used
 Fig_omega <- function(omega_msm, omega_msw, omega_women, data_msm, data_msw, data_women, xmax){
 
+  
+  omega_msm_sens = omega_msm
+  omega_msw_sens = omega_msw
+  omega_women_sens = omega_women
+  
+  omega_msm_sens[, 3:511] = omega_msm[,3]
+  omega_msw_sens[, 3:103] = omega_msw[,3]
+  omega_women_sens[, 3:101] = omega_women[,3]
+  
 
   # Reshape the data to long format
   df_long_msm <- omega_msm |>
@@ -321,6 +368,16 @@ Fig_omega <- function(omega_msm, omega_msw, omega_women, data_msm, data_msw, dat
     ) |>
     mutate(variable = as.integer(gsub("V", "", variable)))  # Convert variable names to integers
   df_long_msm$orientation = "MSM"
+  
+  
+  df_long_msm_sens <- omega_msm_sens |>
+    pivot_longer(
+      cols = -row_id,  # All columns except row_id
+      names_to = "variable",
+      values_to = "value"
+    ) |>
+    mutate(variable = as.integer(gsub("V", "", variable)))  # Convert variable names to integers
+  df_long_msm_sens$orientation = "MSM"
 
 df_long_msw <- omega_msw |>
   pivot_longer(
@@ -331,6 +388,15 @@ df_long_msw <- omega_msw |>
   mutate(variable = as.integer(gsub("V", "", variable)))  # Convert variable names to integers
 df_long_msw$orientation = "MSW"
 
+df_long_msw_sens <- omega_msw_sens |>
+  pivot_longer(
+    cols = -row_id,  # All columns except row_id
+    names_to = "variable",
+    values_to = "value"
+  ) |>
+  mutate(variable = as.integer(gsub("V", "", variable)))  # Convert variable names to integers
+df_long_msw_sens$orientation = "MSW"
+
 df_long_women <- omega_women |>
   pivot_longer(
     cols = -row_id,  # All columns except row_id
@@ -340,8 +406,18 @@ df_long_women <- omega_women |>
   mutate(variable = as.integer(gsub("V", "", variable)))  # Convert variable names to integers
 df_long_women$orientation = "Women"
 
+df_long_women_sens <- omega_women_sens |>
+  pivot_longer(
+    cols = -row_id,  # All columns except row_id
+    names_to = "variable",
+    values_to = "value"
+  ) |>
+  mutate(variable = as.integer(gsub("V", "", variable)))  # Convert variable names to integers
+df_long_women_sens$orientation = "Women"
+
 
 df_long <- rbind(df_long_msm, df_long_msw, df_long_women)
+df_long_sens <- rbind(df_long_msm_sens, df_long_msw_sens, df_long_women_sens)
 
   summary_stats <- df_long %>%
     group_by(variable, orientation) %>%
@@ -350,7 +426,20 @@ df_long <- rbind(df_long_msm, df_long_msw, df_long_women)
       q2.5 = quantile(value, 0.025),
       q97.5 = quantile(value, 0.975)
     )
-
+  summary_stats$scenario = "main"
+  
+  summary_stats_sens <- df_long_sens %>%
+    group_by(variable, orientation) %>%
+    summarize(
+      median = median(value),
+      q2.5 = quantile(value, 0.025),
+      q97.5 = quantile(value, 0.975)
+    )
+  summary_stats_sens$scenario = "sensitivity"
+  
+  summary_stats <- rbind(summary_stats, summary_stats_sens)
+  
+  
   data_msm$prop = data_msm$M/ data_msm$N
   binom.exact <- binom.confint(data_msm$M, data_msm$N, method = "exact")
   data_msm$lower = binom.exact$lower
@@ -372,8 +461,8 @@ df_long <- rbind(df_long_msm, df_long_msw, df_long_women)
   data_df <- rbind(data_msm, data_msw, data_women)
 
   p <- ggplot(summary_stats, aes(x = variable)) +
-    geom_ribbon(aes(ymin = q2.5, ymax = q97.5), fill = "grey80") +
-    geom_line(aes(y = median), color = "black") +
+    geom_ribbon(aes(ymin = q2.5, ymax = q97.5, fill = scenario), alpha = 0.1) +
+    geom_line(aes(y = median, color = scenario)) +
     labs(x = "total # of partners", y = "Proportion of partners casual", title = "") +
     theme_light() + geom_point(data = data_df, (aes(x = partners, y = prop))) +
     geom_linerange(data = data_df, aes(x = partners, ymin = lower, ymax = upper)) +
