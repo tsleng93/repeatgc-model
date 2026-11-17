@@ -110,7 +110,7 @@ strategy_df <- function(df, sex_orientation, palettefill, palettecol){
     firstinfectionswithoutvaccine = df_strategy$firstinfections[counter]
     lifeyearswithoutvaccine = df_strategy$lifeyears[counter]
     FOIwithoutvaccine = firstinfectionswithoutvaccine/lifeyearswithoutvaccine
-    
+
     df_strategy$impactnum[counter] =  1000*(FOIwithoutvaccine - df_strategy$firstinfections[counter]/df_strategy$lifeyears[counter])
     df_strategy$impact[counter] = 100*(FOIwithoutvaccine - df_strategy$firstinfections[counter]/df_strategy$lifeyears[counter])/FOIwithoutvaccine
     

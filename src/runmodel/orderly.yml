@@ -57,6 +57,10 @@ parameters:
       default: 1
   relsample_history:
       default: 1
+  omega_sens:
+      default: "NULL"
+  degdist_sens:
+      default: "NULL"
   
 script: script.R
 
@@ -70,6 +74,7 @@ artefacts:
        - data/df_NX.rds
        - data/df_Lifeyears.rds
        - data/df_N.rds
+       - data/df_D.rds
 
 
 packages:
@@ -86,6 +91,9 @@ depends:
       id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:alpha_msm_min == alpha_msm_min && parameter:alpha_msm_max == alpha_msm_max && parameter:alpha_msw_min == alpha_msw_min && parameter:alpha_msw_max == alpha_msw_max && parameter:alpha_women_min == alpha_women_min && parameter:alpha_women_max == alpha_women_max  && parameter:nstable_msm_min == nstable_msm_min && parameter:nstable_msm_max == nstable_msm_max && parameter:nstable_msw_min == nstable_msw_min && parameter:nstable_msw_max == nstable_msw_max && parameter:nstable_women_min == nstable_women_min && parameter:nstable_women_max == nstable_women_max && parameter:ncasual_msm_min == ncasual_msm_min && parameter:ncasual_msm_max == ncasual_msm_max && parameter:ncasual_msw_min == ncasual_msw_min && parameter:ncasual_msw_max == ncasual_msw_max && parameter:ncasual_women_min == ncasual_women_min && parameter:ncasual_women_max == ncasual_women_max && parameter:QALYvals_men_min == QALYvals_men_min && parameter:QALYvals_men_max == QALYvals_men_max && parameter:QALYvals_women_min == QALYvals_women_min && parameter:QALYvals_women_max == QALYvals_women_max && parameter:relsample_HIV == relsample_HIV && parameter:relsample_PrEP == relsample_PrEP && parameter:relsample_history == relsample_history)
       use:
        inputs/model_params.rds: data/model_params.rds
+       inputs/sampled_degdist_msm.rds: data/sampled_degdist_msm.rds
+       inputs/sampled_degdist_msw.rds: data/sampled_degdist_msw.rds
+       inputs/sampled_degdist_women.rds: data/sampled_degdist_women.rds
   - datamaker:
       id: latest(parameter:npar == npar)
       use:

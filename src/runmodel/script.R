@@ -6,10 +6,110 @@ omega_msm <-  readRDS("inputs/omega_msm.rds")
 omega_msw <-  readRDS("inputs/omega_msw.rds")
 omega_women <-  readRDS("inputs/omega_women.rds")
 
+if (omega_sens == "min"){
+  
+  omega_msm[, 3:511] = omega_msm[,3]
+  omega_msw[, 3:103] = omega_msw[,3]
+  omega_women[, 3:101] = omega_women[,3]
+  
+  #omega_msm <- omega_msm[rep(which.min(omega_msm[, 511]), nrow(omega_msm)), ]
+  #omega_msw <- omega_msw[rep(which.min(omega_msw[, 103]), nrow(omega_msw)), ]
+  #omega_women <- omega_women[rep(which.min(omega_women[, 101]), nrow(omega_women)), ]
+} else if (omega_sens == "max"){
+  omega_msm <- omega_msm[rep(which.max(omega_msm[, 511]), nrow(omega_msm)), ]
+  omega_msw <- omega_msw[rep(which.max(omega_msw[, 103]), nrow(omega_msw)), ]
+  omega_women <- omega_women[rep(which.max(omega_women[, 101]), nrow(omega_women)), ]
+}
+
+
+
+
 degdist_msm <-  readRDS("inputs/degdist_msm.rds")
 degdist_msw <-  readRDS("inputs/degdist_msw.rds")
 degdist_women <-  readRDS("inputs/degdist_women.rds")
 
+sampled_degdist_msm <-  readRDS("inputs/sampled_degdist_msm.rds")
+sampled_degdist_msw <-  readRDS("inputs/sampled_degdist_msw.rds")
+sampled_degdist_women <-  readRDS("inputs/sampled_degdist_women.rds")
+
+
+
+degdist_list_msm <- split(sampled_degdist_msm, 
+                          sampled_degdist_msm$paramnum)
+
+degdist_list_msw <- split(sampled_degdist_msw, 
+                          sampled_degdist_msw$paramnum)
+
+degdist_list_women <- split(sampled_degdist_women, 
+                          sampled_degdist_women$paramnum)
+
+if (degdist_sens != "NULL"){
+  auc_results <- sampled_degdist_msm %>%
+    group_by(paramnum) %>%
+    arrange(numpartners, .by_group = TRUE) %>%
+    mutate(
+      cumulative = cumsum(nohistorynonuser_prob)
+    ) %>%
+    summarise(
+      auc = sum(
+        (head(cumulative, -1) + tail(cumulative, -1)) / 2 *
+          diff(numpartners)
+      ),
+      .groups = "drop"
+    )
+  
+  # Identify extreme simulations
+  lowest_auc_msm <- auc_results %>%
+    slice_min(auc, n = 1)
+  
+  highest_auc_msm <- auc_results %>%
+    slice_max(auc, n = 1)
+  
+  auc_results <- sampled_degdist_msw %>%
+    group_by(paramnum) %>%
+    arrange(numpartners, .by_group = TRUE) %>%
+    mutate(
+      cumulative = cumsum(nohistorynonuser_prob)
+    ) %>%
+    summarise(
+      auc = sum(
+        (head(cumulative, -1) + tail(cumulative, -1)) / 2 *
+          diff(numpartners)
+      ),
+      .groups = "drop"
+    )
+  
+  # Identify extreme simulations
+  lowest_auc_msw <- auc_results %>%
+    slice_min(auc, n = 1)
+  
+  highest_auc_msw <- auc_results %>%
+    slice_max(auc, n = 1)
+  
+  auc_results <- sampled_degdist_women %>%
+    group_by(paramnum) %>%
+    arrange(numpartners, .by_group = TRUE) %>%
+    mutate(
+      cumulative = cumsum(nohistorynonuser_prob)
+    ) %>%
+    summarise(
+      auc = sum(
+        (head(cumulative, -1) + tail(cumulative, -1)) / 2 *
+          diff(numpartners)
+      ),
+      .groups = "drop"
+    )
+  
+  # Identify extreme simulations
+  lowest_auc_women <- auc_results %>%
+    slice_min(auc, n = 1)
+  
+  highest_auc_women <- auc_results %>%
+    slice_max(auc, n = 1)
+  
+  
+  
+}
 
 # initialise model outputs into df_model
 
@@ -54,99 +154,244 @@ df_model$N_scale = 0
 Years_QALY = 5
 
 
+if (YearlyDiagnoses == OverallDiagnoses) {
+  
+  df_model$N_scale <- 1
+  
+} else {
+  
+  N_totals <- df_model %>%
+    group_by(paramnum) %>%
+    summarise(total_N = sum(N), .groups = "drop")
+  
+  df_model <- df_model %>%
+    left_join(N_totals, by = "paramnum") %>%
+    mutate(N_scale = YearlyDiagnoses / total_N) %>%
+    select(-total_N)
+  
+}
+
+
+### Initialise output vectors ###
+
+n <- nrow(df_model)
+
+withoutvaccine <- numeric(n)
+withvaccine <- numeric(n)
+
+Overallwithoutvaccine <- numeric(n)
+Overallwithvaccine <- numeric(n)
+
+Firstinfectionswithoutvaccine <- numeric(n)
+Firstinfectionswithvaccine <- numeric(n)
+
+Lifeyearswithoutvaccine <- numeric(n)
+Lifeyearswithvaccine <- numeric(n)
+
+prev <- numeric(n)
+LL <- numeric(n)
+
+N0model <- numeric(n)
+N1model <- numeric(n)
+
+Fmodel <- numeric(n)
+Fmodel_vaccine <- numeric(n)
+
+QALYlosswithoutvaccine <- numeric(n)
+QALYlosswithvaccine <- numeric(n)
+
+probdiagstable <- rep(1, n)
+probdiagcasual <- rep(1, n)
+
+
+
+sex_orientation = df_model$sex_orientation
+paramnum = df_model$paramnum
+degdistmarker = df_model$degdistmarker
+alpha = df_model$alpha
+N1 = df_model$N1
+F = df_model$F
+sexactscasual = df_model$sexactscasual
+sexactsstable = df_model$sexactsstable
+probdiagstable = df_model$probdiagstable
+probdiagcasual = df_model$probdiagcasual
+dur = df_model$dur
+N = df_model$N
+QALYs = df_model$QALYs
+N_scale = df_model$N_scale
+
 for (i in 1:nrow(df_model)){
   
-  if (df_model$sex_orientation[i] == "MSM"){
-    degdist <- degdist_msm[,  c(1, df_model$degdistmarker[i])]
+  if (sex_orientation[i] == "MSM"){
+    
+    if (degdist_sens == "NULL"){
+      
+      degdist <- degdist_list_msm[[as.character(paramnum[i])]]
+      #degdist <- sampled_degdist_msm |> filter(paramnum == paramnum[i])
+    } else if (degdist_sens == "min"){
+      degdist <- degdist_list_msm[[as.character(highest_auc_msm$paramnum)]]
+      
+      #degdist <- sampled_degdist_msm |> filter(paramnum == highest_auc_msm$paramnum)
+    } else if (degdist_sens == "max"){
+      degdist <- degdist_list_msm[[as.character(lowest_auc_msm$paramnum)]]
+      #degdist <- sampled_degdist_msm |> filter(paramnum == lowest_auc_msm$paramnum)
+      
+    }
+    degdist <- degdist[, c(2, degdistmarker[i] + 7)]
+    #degdist <- degdist_msm[,  c(1, degdistmarker[i])]
     omegamat <- omega_msm[ , seq_len(ncol(omega_msm)-1)]
-  } else if (df_model$sex_orientation[i] == "non-MSM men"){
-    degdist <- degdist_msw[, c(1, df_model$degdistmarker[i])]
+  } else if (sex_orientation[i] == "non-MSM men"){
+    if (degdist_sens == "NULL"){
+      degdist <- degdist_list_msw[[as.character(paramnum[i])]]
+      
+      #degdist <- sampled_degdist_msw |> filter(paramnum == paramnum[i])
+    } else if (degdist_sens == "min"){
+      degdist <- degdist_list_msw[[as.character(highest_auc_msw$paramnum)]]
+      
+      
+      #degdist <- sampled_degdist_msw |> filter(paramnum == highest_auc_msw$paramnum)
+    } else if (degdist_sens == "max"){
+      
+      degdist <- degdist_list_msw[[as.character(lowest_auc_msw$paramnum)]]
+      
+      #degdist <- sampled_degdist_msw |> filter(paramnum == lowest_auc_msw$paramnum)
+    }
+    degdist <- degdist[, c(2, degdistmarker[i] + 7)]
+    #degdist <- degdist_msw[, c(1, degdistmarker[i])]
     omegamat <- omega_msw[, seq_len(ncol(omega_msw)-1)]
   } else{
-    degdist <- degdist_women[,  c(1, df_model$degdistmarker[i])]
+    if (degdist_sens == "NULL"){
+      #degdist <- sampled_degdist_women |> filter(paramnum == paramnum[i])
+      degdist <- degdist_list_women[[as.character(paramnum[i])]]
+      
+    } else if (degdist_sens == "min"){
+      degdist <- degdist_list_women[[as.character(highest_auc_women$paramnum)]]
+      
+      #degdist <- sampled_degdist_women |> filter(paramnum == highest_auc_women$paramnum)
+    } else if (degdist_sens == "max"){
+      degdist <- degdist_list_women[[as.character(lowest_auc_women$paramnum)]]
+      
+      
+      #degdist <- sampled_degdist_women |> filter(paramnum == lowest_auc_women$paramnum)
+    }
+    degdist <- degdist[, c(2, degdistmarker[i] + 7)]
+    #degdist <- degdist_women[,  c(1, degdistmarker[i])]
     omegamat <- omega_women[, seq_len(ncol(omega_women)-1)]
   }
   
-  omegavals <- as.numeric(omegamat[df_model$paramnum[i], ])
+  omegavals <- as.numeric(omegamat[paramnum[i], ])
   
   
   # find prevalence to satisfy FOI
-  temp = FindPrev_fun(df_model$alpha[i], df_model$N1[i], df_model$F[i]/1000,  
+  temp = FindPrev_fun(alpha[i], N1[i], F[i]/1000,  
                      degdist[, 1], degdist[,2], omegavals, 
-                     sexactscasual = df_model$sexactscasual[i], 
-                     sexactsstable = df_model$sexactsstable[i], 
-                     probdiagstable = df_model$probdiagstable[i], 
-                     probdiagcasual = df_model$probdiagcasual[i], 
-                     dur = df_model$dur[i], N = df_model$N[i])
+                     sexactscasual = sexactscasual[i], 
+                     sexactsstable = sexactsstable[i], 
+                     probdiagstable = probdiagstable[i], 
+                     probdiagcasual = probdiagcasual[i], 
+                     dur = dur[i], N = N[i])
   
-  df_model$prev[i] = temp[1]
-  df_model$LL[i] = temp[2]
+  prev[i] = temp[1]
+  LL[i] = temp[2]
 
   
   # run model with and without vaccine
-  tempmodeloutput_withoutvaccine = model(df_model$prev[i], df_model$alpha[i], 
+  tempmodeloutput_withoutvaccine = model(prev[i], alpha[i], 
                                          degdist[, 1], degdist[, 2], omegavals,
-                                         sexactscasual = df_model$sexactscasual[i],
-                                         sexactsstable = df_model$sexactsstable[i],
-                                         probdiagstable = df_model$probdiagstable[i],
-                                         probdiagcasual = df_model$probdiagcasual[i],
-                                         dur = df_model$dur[i])
+                                         sexactscasual = sexactscasual[i],
+                                         sexactsstable = sexactsstable[i],
+                                         probdiagstable = probdiagstable[i],
+                                         probdiagcasual = probdiagcasual[i],
+                                         dur = dur[i])
   
-  tempmodeloutput_withvaccine = model(df_model$prev[i], (1-peractefficacy)*df_model$alpha[i],
+  tempmodeloutput_withvaccine = model(prev[i], (1-peractefficacy)*alpha[i],
                                       degdist[, 1], degdist[, 2],  omegavals,
-                                      sexactscasual = df_model$sexactscasual[i],
-                                      sexactsstable = df_model$sexactsstable[i],
-                                      probdiagstable = df_model$probdiagstable[i],
-                                      probdiagcasual = df_model$probdiagcasual[i],
-                                      dur = df_model$dur[i])
+                                      sexactscasual = sexactscasual[i],
+                                      sexactsstable = sexactsstable[i],
+                                      probdiagstable = probdiagstable[i],
+                                      probdiagcasual = probdiagcasual[i],
+                                      dur = dur[i])
   
   
 
   ## if YearlyDiagnoses == OverallDiagnoses, stick with current numbers (different for each parameter set)
   ## if unequal, rescale so results per yearly diagnoses (same for all parameter sets)
-  if (YearlyDiagnoses == OverallDiagnoses){
-    N_scale = 1
-  } else{
-    N_scale = YearlyDiagnoses/sum(df_model$N[df_model$paramnum == df_model$paramnum[i]])
-  }
+  # if (YearlyDiagnoses == OverallDiagnoses){
+  #   N_scale = 1
+  # } else{
+  #   N_scale = YearlyDiagnoses/sum(N[paramnum == paramnum[i]])
+  # }
+  # 
+  # N_scale[i] = N_scale
   
-  df_model$N_scale[i] = N_scale
-  
+  #N_scale = N_scale[i]
   
   # number of repeat-GC diagnoses per year
-  df_model$withoutvaccine[i] = N_scale*df_model$N[i]*tempmodeloutput_withoutvaccine[4]
-  df_model$withvaccine[i] = N_scale*df_model$N[i]*tempmodeloutput_withvaccine[4]
+  withoutvaccine[i] = N_scale[i]*N[i]*tempmodeloutput_withoutvaccine[4]
+  withvaccine[i] = N_scale[i]*N[i]*tempmodeloutput_withvaccine[4]
   
   
   if (OverallDiagnoses == YearlyDiagnoses){
     # number of repeat-GC diagnoses over follow-up period
-    df_model$Overallwithoutvaccine[i] = df_model$dur[i]*df_model$withoutvaccine[i]
-    df_model$Overallwithvaccine[i] =   df_model$dur[i]*df_model$withvaccine[i]
+    Overallwithoutvaccine[i] = dur[i]*withoutvaccine[i]
+    Overallwithvaccine[i] =   dur[i]*withvaccine[i]
   } else{
     # number of repeat-GC diagnoses over time horizon for health impacts for QALYs
-    df_model$Overallwithoutvaccine[i] = Years_QALY*df_model$withoutvaccine[i]
-    df_model$Overallwithvaccine[i] =   Years_QALY*df_model$withvaccine[i]
+    Overallwithoutvaccine[i] = Years_QALY*withoutvaccine[i]
+    Overallwithvaccine[i] =   Years_QALY*withvaccine[i]
   }
 
   
   # number of individuals with at least one repeat-GC diagnosis
-  df_model$Firstinfectionswithoutvaccine[i] = N_scale*df_model$N[i]*tempmodeloutput_withoutvaccine[1]
-  df_model$Firstinfectionswithvaccine[i] = N_scale*df_model$N[i]*tempmodeloutput_withvaccine[1]
+  Firstinfectionswithoutvaccine[i] = N_scale[i]*N[i]*tempmodeloutput_withoutvaccine[1]
+  Firstinfectionswithvaccine[i] = N_scale[i]*N[i]*tempmodeloutput_withvaccine[1]
   
   # number of lifeyears until first repeat-GC diagnoses or end of follow-up period
-  df_model$Lifeyearswithoutvaccine[i] = N_scale*df_model$N[i]*tempmodeloutput_withoutvaccine[2]
-  df_model$Lifeyearswithvaccine[i] = N_scale*df_model$N[i]*tempmodeloutput_withvaccine[2]
+  Lifeyearswithoutvaccine[i] = N_scale[i]*N[i]*tempmodeloutput_withoutvaccine[2]
+  Lifeyearswithvaccine[i] = N_scale[i]*N[i]*tempmodeloutput_withvaccine[2]
   
-  df_model$N0model[i] = N_scale*df_model$N[i]*(1 - tempmodeloutput_withoutvaccine[1])
-  df_model$N1model[i] = N_scale*df_model$N[i]*tempmodeloutput_withoutvaccine[1]
+  N0model[i] = N_scale[i]*N[i]*(1 - tempmodeloutput_withoutvaccine[1])
+  N1model[i] = N_scale[i]*N[i]*tempmodeloutput_withoutvaccine[1]
   
-  df_model$Fmodel[i]  = tempmodeloutput_withoutvaccine[1]/tempmodeloutput_withoutvaccine[2]
-  df_model$Fmodel_vaccine[i]  = tempmodeloutput_withvaccine[1]/tempmodeloutput_withvaccine[2]
+  Fmodel[i]  = tempmodeloutput_withoutvaccine[1]/tempmodeloutput_withoutvaccine[2]
+  Fmodel_vaccine[i]  = tempmodeloutput_withvaccine[1]/tempmodeloutput_withvaccine[2]
   
   
-  df_model$QALYlosswithoutvaccine[i] = N_scale*Years_QALY*df_model$N[i]*df_model$QALYs[i]*tempmodeloutput_withoutvaccine[5]
-  df_model$QALYlosswithvaccine[i] = N_scale*Years_QALY*df_model$N[i]*df_model$QALYs[i]*tempmodeloutput_withvaccine[5]
+  QALYlosswithoutvaccine[i] = N_scale[i]*Years_QALY*N[i]*QALYs[i]*tempmodeloutput_withoutvaccine[5]
+  QALYlosswithvaccine[i] = N_scale[i]*Years_QALY*N[i]*QALYs[i]*tempmodeloutput_withvaccine[5]
 }
+
+
+### Add output vectors back to df_model ###
+
+df_model$withoutvaccine <- withoutvaccine
+df_model$withvaccine <- withvaccine
+
+df_model$Overallwithoutvaccine <- Overallwithoutvaccine
+df_model$Overallwithvaccine <- Overallwithvaccine
+
+df_model$Firstinfectionswithoutvaccine <- Firstinfectionswithoutvaccine
+df_model$Firstinfectionswithvaccine <- Firstinfectionswithvaccine
+
+df_model$Lifeyearswithoutvaccine <- Lifeyearswithoutvaccine
+df_model$Lifeyearswithvaccine <- Lifeyearswithvaccine
+
+df_model$prev <- prev
+df_model$LL <- LL
+
+df_model$N0model <- N0model
+df_model$N1model <- N1model
+
+df_model$Fmodel <- Fmodel
+df_model$Fmodel_vaccine <- Fmodel_vaccine
+
+df_model$QALYlosswithoutvaccine <- QALYlosswithoutvaccine
+df_model$QALYlosswithvaccine <- QALYlosswithvaccine
+
+#df_model$probdiagstable <- probdiagstable
+#df_model$probdiagcasual <- probdiagcasual
+
+#df_model$N_scale <- N_scale
 
 df_model$GroupEfficacy = 1 - df_model$withvaccine/df_model$withoutvaccine
 
@@ -196,6 +441,8 @@ df_NX <- model_data_comparison(df_data, df_model, "N.X.", "N.X.min", "N.X.max", 
                              labels = c("Sampled target", "Model"))
 
 
+df_D <- model_data_comparison(df_data, df_model, "D", "Dmin", "Dmax", modeloutputs = "Overallwithoutvaccine", labels = "Model")
+
 
 df_data$N = df_data$N.X. + df_data$N.W.
 df_data$Nmin = df_data$N.X.min + df_data$N.W.min
@@ -212,4 +459,5 @@ saveRDS(df_strategy, "data/strategies.rds")
 saveRDS(df_FOI, "data/df_FOI.rds")
 saveRDS(df_NX, "data/df_NX.rds")
 saveRDS(df_Lifeyears, "data/df_Lifeyears.rds")
+saveRDS(df_D, "data/df_D.rds")
 saveRDS(df_N, "data/df_N.rds")
