@@ -1,0 +1,100 @@
+parameters:
+  npar:
+      default: 100
+  peractefficacy:
+      default: 0.5
+  YearlyDiagnoses:
+      default: 100000
+  OverallDiagnoses:
+      default: 485694
+  alpha_msm_min:
+      default: 0
+  alpha_msm_max:
+      default: 1
+  alpha_msw_min:
+      default: 0
+  alpha_msw_max:
+      default: 1
+  alpha_women_min:
+      default: 0
+  alpha_women_max:
+      default: 1
+  nstable_msm_min:
+      default: 0
+  nstable_msm_max:
+      default: 1
+  nstable_msw_min:
+      default: 0
+  nstable_msw_max:
+      default: 1
+  nstable_women_min:
+      default: 0
+  nstable_women_max:
+      default: 1
+  ncasual_msm_min:
+      default: 0
+  ncasual_msm_max:
+      default: 1
+  ncasual_msw_min:
+      default: 0
+  ncasual_msw_max:
+      default: 1
+  ncasual_women_min:
+      default: 0
+  ncasual_women_max:
+      default: 1
+  QALYvals_men_min:
+      default: 0
+  QALYvals_men_max:
+      default: 1
+  QALYvals_women_min:
+      default: 0
+  QALYvals_women_max:
+      default: 1
+  relsample_HIV:
+      default: 1
+  relsample_PrEP:
+      default: 1
+  relsample_history:
+      default: 1
+  omega_sens:
+      default: "NULL"
+  
+script: script.R
+
+artefacts:
+ - staticgraph:
+     description: model outputs for each parameter set, and aggregated for each strategy
+     filenames: 
+       - figs/degdistsmsm.png
+       - figs/degdistsmsw.png
+       - figs/degdistswomen.png
+       - figs/cumdegdists.png
+       
+
+packages:
+   - ggplot2
+   - tidyverse
+
+sources:
+   - support.R
+
+resources:
+
+depends:
+  - modelsample:
+      id: latest(parameter:npar == npar && parameter:OverallDiagnoses == OverallDiagnoses && parameter:alpha_msm_min == alpha_msm_min && parameter:alpha_msm_max == alpha_msm_max && parameter:alpha_msw_min == alpha_msw_min && parameter:alpha_msw_max == alpha_msw_max && parameter:alpha_women_min == alpha_women_min && parameter:alpha_women_max == alpha_women_max  && parameter:nstable_msm_min == nstable_msm_min && parameter:nstable_msm_max == nstable_msm_max && parameter:nstable_msw_min == nstable_msw_min && parameter:nstable_msw_max == nstable_msw_max && parameter:nstable_women_min == nstable_women_min && parameter:nstable_women_max == nstable_women_max && parameter:ncasual_msm_min == ncasual_msm_min && parameter:ncasual_msm_max == ncasual_msm_max && parameter:ncasual_msw_min == ncasual_msw_min && parameter:ncasual_msw_max == ncasual_msw_max && parameter:ncasual_women_min == ncasual_women_min && parameter:ncasual_women_max == ncasual_women_max && parameter:QALYvals_men_min == QALYvals_men_min && parameter:QALYvals_men_max == QALYvals_men_max && parameter:QALYvals_women_min == QALYvals_women_min && parameter:QALYvals_women_max == QALYvals_women_max && parameter:relsample_HIV == relsample_HIV && parameter:relsample_PrEP == relsample_PrEP && parameter:relsample_history == relsample_history)
+      use:
+       inputs/sampled_degdist_msm.rds: data/sampled_degdist_msm.rds
+       inputs/sampled_degdist_msw.rds: data/sampled_degdist_msw.rds
+       inputs/sampled_degdist_women.rds: data/sampled_degdist_women.rds
+  - datamaker:
+      id: latest(parameter:npar == npar)
+      use:
+       inputs/degdist_msm.rds: data/degdist_msm.rds
+       inputs/degdist_msw.rds: data/degdist_msw.rds
+       inputs/degdist_women.rds: data/degdist_women.rds
+       
+
+
+
